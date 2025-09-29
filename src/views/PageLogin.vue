@@ -1,5 +1,5 @@
 <template>
-    <body class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light" data-uk-height-viewport>
+	<div class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light" data-uk-height-viewport>
 		<!-- overlay -->
 		<div class="uk-position-cover uk-overlay-primary"></div>
 		<!-- /overlay -->
@@ -12,8 +12,7 @@
 				<img src="../../assets/img/login-logo.svg" alt="Logo">
 			</div>
 
-			<!-- login -->
-			<form class="toggle-class" @submit.prevent="onLogin">
+			<form v-if="isLogin" @submit.prevent="onLogin">
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin-small">
 						<div class="uk-inline uk-width-1-1">
@@ -35,32 +34,70 @@
 					</div>
 				</fieldset>
 			</form>
-			<!-- /login -->
 
-			<!-- recover password -->
-			<form class="toggle-class" action="login-dark.html" hidden>
+			<form v-else @submit.prevent="onSignup">
 				<div class="uk-margin-small">
-					<div class="uk-inline uk-width-1-1">
-						<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
-						<input class="uk-input uk-border-pill" placeholder="E-mail" required type="text">
-					</div>
+					<fieldset class="uk-fieldset">
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Pseudo" type="text" v-model="signupPseudo">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Email" type="email" v-model="signupEmail">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: location"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Code postal" type="text" v-model="signupCityCode">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: location"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Ville" type="text" v-model="signupCity">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: phone"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Téléphone" type="text" v-model="signupPhone">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Password" type="password"
+									v-model="signupPassword">
+							</div>
+						</div>
+						<div class="uk-margin-small">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+								<input class="uk-input uk-border-pill" required placeholder="Confirm Password"
+									type="password" v-model="signupConfirmPassword">
+							</div>
+						</div>
+					</fieldset>
 				</div>
 				<div class="uk-margin-bottom">
-					<button type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">SEND PASSWORD</button>
+					<button type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">SIGN
+						IN</button>
 				</div>
 			</form>
-			<!-- /recover password -->
-			
-			<!-- action buttons -->
+
 			<div>
 				<div class="uk-text-center">
-					<a class="uk-link-reset uk-text-small toggle-class" data-uk-toggle="target: .toggle-class ;animation: uk-animation-fade">Forgot your password?</a>
-					<a class="uk-link-reset uk-text-small toggle-class" data-uk-toggle="target: .toggle-class ;animation: uk-animation-fade" hidden><span data-uk-icon="arrow-left"></span> Back to Login</a>
+					<a v-if="isLogin" class="uk-link-reset uk-text-small" @click="isLogin = false">Sign In</a>
+					<a v-else class="uk-link-reset uk-text-small" @click="isLogin = true"><span data-uk-icon="arrow-left"></span> Back to Login</a>
 				</div>
 			</div>
-			<!-- action buttons -->
 		</div>
-	</body>
+	</div>
 </template>
 
 <script>
@@ -68,25 +105,62 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
-  setup() {
-    const username = ref('')
-    const password = ref('')
-    const router = useRouter()
+	setup() {
+		const isLogin = ref(true)
+		const username = ref('')
+		const password = ref('')
+		const router = useRouter()
 
-    const onLogin = async () => {
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.value, password: password.value })
-      })
-      if (response.ok) {
-        router.push({ name: 'PageArticles' })
-      } else {
-        alert('Identifiants invalides')
-      }
-    }
+		// Pour l'inscription
+		const signupEmail = ref('')
+		const signupPassword = ref('')
+		const signupConfirmPassword = ref('')
 
-    return { username, password, onLogin }
-  }
+			const onLogin = async () => {
+				const response = await fetch('http://localhost:3000/login', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email: username.value, password: password.value })
+				})
+				let json
+				try {
+					json = await response.json()
+				} catch (e) {
+					alert('Erreur de connexion au serveur')
+					return
+				}
+				if (json.code === "200") {
+					router.push({ name: 'PageArticles' })
+				} else {
+					alert(json.message || 'Identifiants invalides')
+				}
+			}
+
+		const onSignup = async () => {
+			if (signupPassword.value !== signupConfirmPassword.value) {
+				alert('Les mots de passe ne correspondent pas')
+				return
+			}
+			const response = await fetch('http://localhost:3000/signup', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email: signupEmail.value, password: signupPassword.value, confirmPassword: signupConfirmPassword.value })
+			})
+			if (response.ok) {
+				// On revient au formulaire de connexion uniquement si succès
+				isLogin.value = true
+				// Reset champs
+				signupEmail.value = ''
+				signupPassword.value = ''
+				signupConfirmPassword.value = ''
+				alert('Inscription réussie, veuillez vous connecter.')
+			} else {
+				const error = await response.text()
+				alert('Erreur lors de l\'inscription : ' + error)
+			}
+		}
+
+		return { isLogin, username, password, onLogin, signupEmail, signupPassword, signupConfirmPassword, onSignup }
+	}
 }
 </script>
