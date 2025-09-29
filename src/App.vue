@@ -4,9 +4,6 @@
 			<component :is="Component" v-if="route.name === 'PageLogin' || route.name === 'PageInscription'" />
 			<div v-else>
 				<nav class="uk-navbar-transparent" data-uk-navbar>
-					<div class="uk-navbar-left" style="margin-left:20px;">
-						<img src="../../assets/img/login-logo.svg" alt="Logo">
-					</div>
 					<div class="uk-navbar-center uk-visible@m">
 						<ul class="uk-navbar-nav">
 							<li><router-link to="/articles">Articles</router-link></li>
