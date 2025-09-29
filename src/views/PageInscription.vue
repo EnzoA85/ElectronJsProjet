@@ -88,7 +88,6 @@ export default {
 			router.push({ name: 'PageLogin' })
 		}
 
-		// Affiche un modal UIkit avec le message passé
 		const showModal = (message) => {
 			if (window.UIkit && window.UIkit.modal) {
 				window.UIkit.modal.dialog(`<div class='uk-modal-body'>${message}</div>`)

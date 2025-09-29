@@ -1,7 +1,12 @@
 <template>
     <section class="uk-section uk-section-small uk-section-default uk-padding-remove-bottom">
         <div class="uk-container uk-container-expand uk-margin-large-bottom">
-            <h3 class="uk-heading-bullet">Liste des articles</h3>
+            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+                <h3 class="uk-heading-bullet uk-margin-remove">Liste des articles</h3>
+                <div class="uk-inline">
+                    <a class="uk-icon-button" data-uk-icon="icon:plus" @click="goToNewArticle"></a>
+                </div>
+            </div>
             <div class="uk-grid uk-grid-medium uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-child-width-1-5@xl uk-grid-match js-filter"
                 data-uk-grid="masonry: true" data-uk-sortable="handle: .drag-icon">
                 <div v-for="article in articles" :key="article.title" class="uk-animation-fade">
@@ -13,7 +18,8 @@
                             </div>
                         </div>
                         <div class="uk-card-body" @click="openArticle(article)">
-                            <h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold">{{ article.title}}</h6>
+                            <h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold">{{ article.title }}
+                            </h6>
                             <p class="uk-text-small uk-text-muted">{{ article.desc }}</p>
                         </div>
                         <div class="uk-card-footer">
@@ -58,6 +64,10 @@ function openArticle(article) {
     if (article && article.id) {
         router.push(`/article/${article.id}`);
     }
+}
+
+function goToNewArticle() {
+    router.push({ name: 'PageNewArticle' });
 }
 
 onMounted(() => {

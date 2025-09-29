@@ -4,6 +4,7 @@ import PageLogin from '../views/PageLogin.vue';
 import PageArticleDetail from '../views/PageArticleDetail.vue';
 import PageEditArticle from '../views/PageEditArticle.vue';
 import PageInscription from '../views/PageInscription.vue';
+import PageNewArticle from '../views/PageNewArticle.vue';
 
 const routes = [
     { path: '/', name: 'PageLogin', component: PageLogin },
@@ -11,6 +12,7 @@ const routes = [
     { path: '/article/:id', name: 'PageArticleDetail', component: PageArticleDetail },
     { path: '/article/:id/edit', name: 'PageEditArticle', component: PageEditArticle },
     { path: '/inscription', name: 'PageInscription', component: PageInscription},
+    { path: '/article/new', name: 'PageNewArticle', component: PageEditArticle }
 ];
 
 const router = createRouter({

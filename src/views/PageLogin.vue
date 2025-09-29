@@ -75,6 +75,8 @@ export default {
 				return
 			}
 			if (json.code === "200") {
+				// stocker l'email du user pour l'utiliser comme author
+				try { localStorage.setItem('userEmail', username.value) } catch (e) { /* ignore */ }
 				router.push({ name: 'PageArticles' })
 			} else {
 				showModal(json.message || 'Identifiants invalides')
