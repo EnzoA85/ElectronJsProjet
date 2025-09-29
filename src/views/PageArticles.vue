@@ -1,23 +1,56 @@
-<!-- UX/UI de la vue -->
 <template>
-    <h3>Liste de films</h3>
-    <button @click="callApi" class="uk-button uk-button-primary">Appeler API</button>
-
-    <div v-for="movie in movies" :key="movie.title">
-        {{ movie.title }}
-    </div>
+    <section class="uk-section uk-section-small uk-section-default uk-padding-remove-bottom">
+        <div class="uk-container uk-container-expand uk-margin-large-bottom">
+            <h3 class="uk-heading-bullet">Liste des articles</h3>
+            <div class="uk-grid uk-grid-medium uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-child-width-1-5@xl uk-grid-match js-filter"
+                data-uk-grid="masonry: true" data-uk-sortable="handle: .drag-icon">
+                <div v-for="article in articles" :key="article.title" class="uk-animation-fade">
+                    <div class="uk-card uk-card-small uk-card-default">
+                        <div class="uk-card-media">
+                            <div class="uk-inline-clip uk-transition-toggle" tabindex="0">
+                                <img class="lazy" :src="article.imgPath" data-uk-img alt="Image article" style="width:100%;height:200px;object-fit:cover;">
+                            </div>
+                        </div>
+                        <div class="uk-card-body">
+                            <h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold">{{ article.title }}</h6>
+                            <p class="uk-text-small uk-text-muted">{{ article.desc }}</p>
+                        </div>
+                        <div class="uk-card-footer">
+                            <div class="uk-grid uk-grid-small uk-grid-divider uk-flex uk-flex-middle" data-uk-grid>
+                                <div class="uk-width-expand uk-text-small">
+                                    {{ article.author }}
+                                </div>
+                                <div class="uk-width-auto uk-text-right">
+                                    <a data-uk-tooltip="title: Twitter" class="uk-icon-link"
+                                        data-uk-icon="icon:twitter; ratio: 0.8"></a>
+                                    <a data-uk-tooltip="title: Instagram" class="uk-icon-link"
+                                        data-uk-icon="icon:instagram; ratio: 0.8"></a>
+                                </div>
+                                <div class="uk-width-auto uk-text-right">
+                                    <a data-uk-tooltip="title: Drag this card" href="#" class="uk-icon-link drag-icon"
+                                        data-uk-icon="icon:move; ratio: 1"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
-<!-- Partie logique de la vue -->
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const movies = ref([]);
+const articles = ref([]);
 
-async function callApi() {
-    const res = await fetch('https://raw.githubusercontent.com/Chocolaterie/EniWebService/main/api/movies.json');
+async function fetchArticles() {
+    const res = await fetch('http://localhost:3000/articles');
     const data = await res.json();
-    // J'alimente les données dans la liste des films statefull
-    movies.value=data;
+    articles.value = Array.isArray(data.data) ? data.data : [];
 }
+
+onMounted(() => {
+    fetchArticles();
+});
 </script>
