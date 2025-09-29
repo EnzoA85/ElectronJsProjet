@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<router-view v-slot="{ Component }">
-			<component :is="Component" v-if="route.name === 'PageLogin'" />
+			<component :is="Component" v-if="route.name === 'PageLogin' || route.name === 'PageInscription'" />
 			<div v-else>
 				<nav class="uk-navbar-transparent" data-uk-navbar>
 					<div class="uk-navbar-left" style="margin-left:20px;">
@@ -45,7 +45,7 @@
 								</div>
 							</li>
 							<li class="uk-hidden@m"><a class="uk-navbar-toggle" data-uk-toggle
-									data-uk-navbar-toggle-icon href="#offcanvas-nav"></a></li>
+									data-uk-navbar-toggle-icon href="#"></a></li>
 						</ul>
 					</div>
 				</nav>
