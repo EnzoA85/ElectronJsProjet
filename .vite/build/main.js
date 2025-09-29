@@ -488,6 +488,7 @@ const createWindow = () => {
   {
     mainWindow.loadURL("http://localhost:5173");
   }
+  mainWindow.webContents.openDevTools();
 };
 require$$3$1.app.whenReady().then(() => {
   createWindow();

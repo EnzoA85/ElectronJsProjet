@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import PageArticles from '../views/PageArticles.vue';
-import PageTwo from '../views/PageTwo.vue';
 import PageLogin from '../views/PageLogin.vue';
+import PageArticleDetail from '../views/PageArticleDetail.vue';
 
 const routes = [
     { path: '/', name: 'PageLogin', component: PageLogin },
     { path: '/articles', name: 'PageArticles', component: PageArticles },
-    { path: '/page-2', name: 'PageTwo', component: PageTwo }
+    { path: '/article/:id', name: 'PageArticleDetail', component: PageArticleDetail },
 ];
 
 const router = createRouter({

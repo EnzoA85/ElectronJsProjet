@@ -6,13 +6,14 @@
                 data-uk-grid="masonry: true" data-uk-sortable="handle: .drag-icon">
                 <div v-for="article in articles" :key="article.title" class="uk-animation-fade">
                     <div class="uk-card uk-card-small uk-card-default">
-                        <div class="uk-card-media">
+                        <div class="uk-card-media" @click="openArticle(article)">
                             <div class="uk-inline-clip uk-transition-toggle" tabindex="0">
-                                <img class="lazy" :src="article.imgPath" data-uk-img alt="Image article" style="width:100%;height:200px;object-fit:cover;">
+                                <img class="lazy" :src="article.imgPath" data-uk-img alt="Image article"
+                                    style="width:100%;height:200px;object-fit:cover;">
                             </div>
                         </div>
-                        <div class="uk-card-body">
-                            <h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold">{{ article.title }}</h6>
+                        <div class="uk-card-body" @click="openArticle(article)">
+                            <h6 class="uk-margin-small-bottom uk-margin-remove-adjacent uk-text-bold">{{ article.title}}</h6>
                             <p class="uk-text-small uk-text-muted">{{ article.desc }}</p>
                         </div>
                         <div class="uk-card-footer">
@@ -48,6 +49,15 @@ async function fetchArticles() {
     const res = await fetch('http://localhost:3000/articles');
     const data = await res.json();
     articles.value = Array.isArray(data.data) ? data.data : [];
+};
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+function openArticle(article) {
+    if (article && article.id) {
+        router.push(`/article/${article.id}`);
+    }
 }
 
 onMounted(() => {
